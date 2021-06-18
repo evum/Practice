@@ -26,10 +26,30 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ * Класс нейросети c четырьмя полями <b>FEATURES_COUNT</b>, <b>CLASSES_COUNT</b>, <b>BATCHSIZE</b>, <b>SEED</b>
+ * @author Евгений
+ */
 public class Bikes {
+
+    /**
+     * Поле для хранения количества входных параметров
+     */
     static final int FEATURES_COUNT = 3;
+
+    /**
+     * Поле для хранения количества выходных классов
+     */
     static final int CLASSES_COUNT = 2;
+
+    /**
+     * Поле для хранения количества входных данных (тренировочных и тестировочных сетов)
+     */
     static final int BATCHSIZE = 140;
+
+    /**
+     * Скорость обучения нейронной сети
+     */
     static final int SEED = 6;
 
 
@@ -40,7 +60,7 @@ public class Bikes {
             System.out.println();
             System.out.println("Файл создан");
         } catch (IOException e) {
-            System.out.println("Error! Невозможно содать файл исходный данных!");
+            System.out.println("Error! Невозможно создать файл входных данных!");
             System.exit(0);
         }
 
@@ -74,6 +94,13 @@ public class Bikes {
         results(model, testData);
     }
 
+    /**
+     * Функция считывания данных из файла
+     * @param allData переменная, в которую будет считана информация из файла
+     * @return считанные данные
+     * @throws IOException в случае ошибки при открытии или считвания файла
+     * @throws InterruptedException в случае ошибки при открытии или ситывания файла
+     */
     private static DataSet input(DataSet allData) throws IOException, InterruptedException {
         RecordReader recordReader = new CSVRecordReader(0, ',');
         recordReader.initialize(new FileSplit(new File("output.txt")));
@@ -84,12 +111,20 @@ public class Bikes {
         return allData;
     }
 
+    /**
+     * Функция нормализации считанных данных
+     * @param allData cчитанные данные
+     */
     private static void normalizing(DataSet allData) {
         DataNormalization normalizer = new NormalizerStandardize();
         normalizer.fit(allData);
         normalizer.transform(allData);
     }
 
+    /**
+     * Фкнция создания конфигурации нейронной сети
+     * @return конфигураци нейросети
+     */
     private static MultiLayerConfiguration neuralNetWorkBuilder() {
         MultiLayerConfiguration configuration = new NeuralNetConfiguration.Builder()
                 .seed(SEED)
@@ -108,6 +143,11 @@ public class Bikes {
         return configuration;
     }
 
+    /**
+     * Функция тестирования нейронной сети и вывода результатов
+     * @param model модель нейронной сети
+     * @param testData данные для тестирования
+     */
     private static void results(MultiLayerNetwork model, DataSet testData) {
         Evaluation eval = new Evaluation(CLASSES_COUNT);
         INDArray output = model.output(testData.getFeatures());

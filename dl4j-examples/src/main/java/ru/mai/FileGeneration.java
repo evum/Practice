@@ -5,8 +5,21 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Класс генерации входных данных для нейросети c одним полем <b>KOLVOROWS</b>
+ * @author Евгений
+ */
 public class FileGeneration {
+
+    /**
+     * Переменная для хранения количества строк в выходном файле
+     */
     final static int KOLVOROWS = 140;
+
+    /**
+     * Функция генерации случайных значений в заданных диапазонах и записи их в файл
+     * @throws IOException при ошибки открытия файла
+     */
     public void gen() throws IOException {
         int angle;
         int chainstay;
